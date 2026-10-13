@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/TomWhitticase/texture-brush/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+displayURL="https://github.com/TomWhitticase/texture-brush"
+authors="Tom Whitticase"
+# Client-side only: servers don't need it and clients don't need it to match the server.
+displayTest="IGNORE_ALL_VERSION"
+description='''
+Automatically mixes blocks as you build. Put the blocks you want in your hotbar (or define a palette), toggle the brush, and every placement picks a block for you using weighted random, patchy noise, cycle or checker patterns.
+'''
+
+[[dependencies.${mod_id}]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.0,)"
+ordering="NONE"
+side="CLIENT"
+
+[[dependencies.${mod_id}]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="CLIENT"
