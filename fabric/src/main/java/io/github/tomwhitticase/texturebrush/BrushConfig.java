@@ -71,6 +71,7 @@ public final class BrushConfig {
     }
 
     static void load() {
+        instance = defaults();
         if (Files.exists(FILE)) {
             try (Reader reader = Files.newBufferedReader(FILE)) {
                 JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();

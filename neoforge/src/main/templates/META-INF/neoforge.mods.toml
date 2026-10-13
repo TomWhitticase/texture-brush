@@ -9,6 +9,7 @@ version="${mod_version}"
 displayName="${mod_name}"
 displayURL="https://github.com/TomWhitticase/texture-brush"
 authors="Tom Whitticase"
+logoFile="texturebrush.png"
 # Client-side only: servers don't need it and clients don't need it to match the server.
 displayTest="IGNORE_ALL_VERSION"
 description='''

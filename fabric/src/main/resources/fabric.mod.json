@@ -11,6 +11,7 @@
     "issues": "https://github.com/TomWhitticase/texture-brush/issues"
   },
   "license": "MIT",
+  "icon": "assets/texturebrush/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": ["io.github.tomwhitticase.texturebrush.TextureBrush"],

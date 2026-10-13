@@ -1,88 +1,158 @@
-# Texture Brush
+<p align="center">
+  <img src="docs/images/icon.png" width="96" alt="Texture Brush icon">
+</p>
 
-A client-side Minecraft mod that mixes blocks for you as you build. Want a brick wall broken up with granite? Put both in your hotbar, press the toggle key, and build. Each placement picks the block for you, so you don't have to keep switching slots.
+<h1 align="center">Texture Brush</h1>
 
-It only uses normal client actions (changing the selected slot, moving items in your inventory), so it works on any server, including vanilla ones, without being installed there.
+<p align="center">
+  <b>Build with a mix of blocks without ever switching slots.</b><br>
+  A client-side Minecraft mod for Fabric and NeoForge.
+</p>
+
+<p align="center">
+  <a href="https://github.com/TomWhitticase/texture-brush/actions/workflows/build.yml"><img src="https://github.com/TomWhitticase/texture-brush/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+  <img src="https://img.shields.io/badge/Fabric-26.3-dbd0b4" alt="Fabric 26.3">
+  <img src="https://img.shields.io/badge/NeoForge-1.21.1-f16436" alt="NeoForge 1.21.1">
+  <img src="https://img.shields.io/badge/side-client%20only-4c9be8" alt="Client only">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
+</p>
+
+<p align="center">
+  <img src="docs/images/showcase.png" alt="Two walls built with Texture Brush: weathered stone bricks with mossy patches, and bricks broken up with granite">
+</p>
+
+Walls made from a single block look flat. Mixing in a few other blocks fixes that, but placing them by hand means switching hotbar slots all the time. Texture Brush does the switching for you. Choose the blocks and how much of each you want, then build as normal. Every block you place is picked from your mix.
+
+Both walls above were built by right-clicking with the brush turned on. Nothing was placed by hand.
+
+## Features
+
+- **Weighted mixes.** For example, bricks 3 and granite 1 gives about 75% bricks and 25% granite.
+- **Four patterns:**
+  - **Random** scatter.
+  - **Noise**, natural-looking patches.
+  - **Cycle**, an even repeating order.
+  - **Checker**.
+- **Saved mixes.** Four come built in (Rustic Brick, Weathered Stone, Deepslate Ruin, Mossy Path), and you can add your own.
+- **An in-game editor.** Everything is point and click, so it works well with a trackpad. It has a live preview wall and a searchable block picker. *(Fabric)*
+- **A status line above the hotbar.** It shows the active mix and each block's share.
+- **Client-side only.** It works on vanilla and modded servers without being installed there.
+- **Works in survival and creative.** In survival it uses the blocks you carry. In creative it can supply blocks from a saved mix even if they're not in your inventory.
 
 ## Install
 
-Download the jar for your loader from [Releases](../../releases) (or build it, see below) and put it in your instance's `mods/` folder.
+1. Download the jar for your loader from [**Releases**](https://github.com/TomWhitticase/texture-brush/releases).
+2. Put it in your instance's `mods/` folder. With CurseForge, that's *right-click the profile → Open Folder → mods*.
+3. Launch the game.
 
-| Jar | Minecraft | Needs |
-|---|---|---|
-| `texturebrush-<version>.jar` | 1.21.1 (NeoForge 21.1.x) | nothing else |
-| `texturebrush-fabric-<version>.jar` | 26.3 (Fabric) | Fabric API. Mod Menu is optional (adds a settings button). |
+| Loader | Minecraft | Jar | Also needs |
+|---|---|---|---|
+| Fabric | 26.3 | `texturebrush-fabric-<version>.jar` | [Fabric API](https://modrinth.com/mod/fabric-api). [Mod Menu](https://modrinth.com/mod/modmenu) is optional and adds a settings button. |
+| NeoForge | 1.21.1 | `texturebrush-neoforge-<version>.jar` | Nothing |
 
-## Use
+## Quick start
 
-| Action | NeoForge key | Fabric key |
-|---|---|---|
-| Turn the brush on/off | `G` | `V` |
-| Add/remove the held hotbar slot from the palette | `Alt+G` | `U` |
-| Next pattern | `Alt+P` | `Y` |
-| Next named palette (or back to hotbar mode) | `Alt+L` | `N` |
-| Open the brush editor | (config screen) | `B` |
+1. Put the blocks you want to mix in your hotbar, for example bricks and granite.
+2. Hold one of them and press **V** on Fabric or **G** on NeoForge. The status line above the hotbar shows the mix.
+3. Build. Each placement picks a block for you.
 
-The Fabric keys are different because Minecraft 26.3 uses `G` for Quick Actions and its key bindings don't support Alt combos.
+To change the mix, press **B** to open the editor (Fabric).
 
-You can rebind these under **Options → Controls → Key Binds → Texture Brush**.
+## The brush editor (Fabric)
 
-While the brush is on, the status line above the hotbar shows the palette, the pattern and each block's share, and green bars mark the slots in use. The brush only kicks in when you're holding one of the palette blocks, so you can still place other blocks by selecting them.
+<p align="center">
+  <img src="docs/images/editor.png" width="80%" alt="The brush editor showing the Weathered Stone mix with the Noise pattern and a preview wall">
+</p>
 
-### Hotbar mode (default)
-Every block in your hotbar is in the palette. To use only some of them, select a slot and press `Alt+G` to add or remove it.
-
-Ratios are set in the config, not by stack size. `weights` holds `item=weight` entries. The default `minecraft:bricks=3` with granite at the default weight of 1 gives 75% bricks and 25% granite. Blocks with no entry use `defaultWeight`, and a weight of 0 leaves a block out.
-
-### Named palettes
-These are saved mixes such as:
-
-```
-Weathered Stone: minecraft:stone_bricks=60, minecraft:cracked_stone_bricks=25, minecraft:mossy_stone_bricks=15
-```
-
-Cycle through them with the palette key (`Alt+L` / `N`). Hold any block from the palette and the brush swaps in the others:
-- **Creative:** the blocks are created in your held slot, so nothing needs to be in your hotbar.
-- **Survival:** the blocks are pulled from your hotbar or inventory. Blocks you don't have are skipped.
-
-### Patterns
-| Pattern | Result |
+| Area | What you can do |
 |---|---|
-| **Random** | Weighted random choice on every placement |
-| **Noise** | Weighted patches (size set by `noiseScale`, layout by `noiseSeed`). The same spot always gives the same block, which is handy for patching a wall later. |
-| **Cycle** | Evenly interleaved order that follows the weights (3:1 → A A B A A A B A …) |
-| **Checker** | Alternates by position, ignoring weights |
+| **Top row** | Turn the brush on or off, change the pattern, and show or hide the HUD. With **Noise** selected, you also get a patch-size slider and a **Shuffle patches** button. |
+| **Mixes** (left) | Pick *Hotbar blocks* or a saved mix. The one you pick is what the brush uses. **+ New** saves the blocks in your hotbar as a new mix, and **Delete** asks you to confirm. |
+| **Blocks** (middle) | Each block shows its share as a bar. Use **−** and **+** to change its weight (shift-click changes it by 5), and **✕** to remove it. Click the name at the top to rename the mix. |
+| **Preview** (right) | Shows an 8×8 wall built with the current mix and pattern, and updates as you edit. **New preview** rolls a different example. |
 
-## Configure
+<p align="center">
+  <img src="docs/images/block-picker.png" width="49%" alt="Block picker filtered to stone bricks, with blocks already in the mix highlighted">
+  <img src="docs/images/editor-hotbar.png" width="49%" alt="Hotbar mode in the editor, with bricks and granite weights">
+</p>
 
-### Fabric: brush editor
-Press **B** in game, or use **Mods → Texture Brush → settings icon**. Everything is point-and-click, so it works well with a trackpad:
-- **Top row:** turn the brush on or off, switch pattern, and show or hide the HUD. With Noise selected, there's also a patch-size slider and a **Shuffle patches** button.
-- **Mixes (left):** pick *Hotbar blocks* or a saved mix. Whatever you pick is what the brush uses. **+ New** saves the blocks in your hotbar as a new mix; **Delete** asks you to confirm.
-- **Blocks (middle):** each block shows its share with a bar. Use **−/+** to change its weight (shift-click for ±5) and **✕** to remove it. **+ Add block** opens a searchable grid of every block, with the ones in your inventory first. In hotbar mode, setting a weight to 0 leaves that block out.
-- **Preview (right):** an 8×8 wall built with the current mix and pattern. Use **New preview** to roll a different example.
+**+ Add block** opens a grid of every block, with the ones in your inventory first. Type to search, and click a block to add it. Blocks already in the mix are highlighted green.
 
-Settings are saved to `config/texturebrush.json`.
+In **hotbar mode** (right screenshot), the mix is whatever blocks are in your hotbar. Setting a block's weight to 0 leaves it out.
 
-### NeoForge
-Open **Mods → Texture Brush → Config**, or edit `config/texturebrush-client.toml`. Changes to the file apply live.
+## Patterns
 
-## Build
-There are two independent Gradle builds. The pattern logic and its tests in `common/` are shared by both.
+| Pattern | What you get | Good for |
+|---|---|---|
+| **Random** | A fresh weighted pick for every block | General variety |
+| **Noise** | Patches of each block that still match your ratios. The same spot always gives the same block. | Moss, weathering, ore-like veins, and patching a wall later |
+| **Cycle** | An evenly spread repeating order, e.g. 3:1 gives A A B A A A B A | Regular trims and stripes |
+| **Checker** | Alternates by position and ignores weights | Checkerboard floors |
+
+## Controls
+
+All of these can be rebound under **Options → Controls → Key Binds → Texture Brush**.
+
+| Action | Fabric | NeoForge |
+|---|---|---|
+| Turn the brush on or off | `V` | `G` |
+| Open the brush editor | `B` | Mods → Texture Brush → Config |
+| Next pattern | `Y` | `Alt+P` |
+| Next saved mix (or back to hotbar) | `N` | `Alt+L` |
+| Add or remove the held slot from the hotbar mix | `U` | `Alt+G` |
+
+The Fabric keys are different because Minecraft 26.3 uses `G` for Quick Actions, and its key bindings don't support Alt combinations.
+
+## How it works
+
+Just before you place a block, the brush picks one from your mix and selects that hotbar slot. Minecraft then places it as normal. If the block isn't in your hotbar, the brush swaps it in from your inventory, or in creative mode creates it. Only actions a player could do by hand are sent to the server: changing slots and moving items in your own inventory. That's why nothing needs installing on the server.
+
+The brush only steps in when you're holding a block from the active mix. Other items and blocks work as usual.
+
+## FAQ
+
+**Does the server need the mod?**
+No. It's client-only, and does nothing if installed on a server.
+
+**Can it get me kicked?**
+On normal servers, no. Very strict anti-cheat plugins on some public servers might flag fast slot switching, so check the server's rules first.
+
+**What happens when I run out of a block in survival?**
+That block drops out of the mix until you have more. The status line shows what's still available.
+
+**Can I mix stairs, slabs or walls?**
+Yes. The brush places whichever item it picks, so keep every block in the mix the same shape (for example, all stairs).
+
+**Where are the settings stored?**
+In `config/texturebrush.json` on Fabric and `config/texturebrush-client.toml` on NeoForge.
+
+## Building from source
+
+The repo has two independent Gradle builds that share the pattern logic in `common/`:
+
+```
+common/     pattern logic and unit tests, shared by both builds
+fabric/     Fabric 26.3: editor, HUD, client game test
+neoforge/   NeoForge 1.21.1
+docs/       README images
+```
 
 ```sh
-cd neoforge && ./gradlew build   # JDK 21, jar in neoforge/build/libs/
-cd fabric && ./gradlew build     # Gradle itself must run on JDK 25, jar in fabric/build/libs/
-./gradlew runClient              # dev client with the mod loaded (in either folder)
-cd fabric && ./gradlew runClientGameTest   # opens the game, builds with the brush, screenshots the editor
+cd fabric   && ./gradlew build   # needs JDK 25 to run Gradle; jar in fabric/build/libs/
+cd neoforge && ./gradlew build   # needs JDK 21; jar in neoforge/build/libs/
+./gradlew runClient              # start a dev client with the mod loaded (either folder)
 ```
 
-The Fabric game test opens a real client and runs these checks:
-- places a floor with the brush and checks that the blocks were mixed;
-- clicks **+** in the editor and checks the weight changed;
-- loads a 1.0.0-format config and checks it converts;
-- saves screenshots to `fabric/build/run/clientGameTest/screenshots/`.
+### Tests
 
-## Notes
-- Very strict anti-cheat plugins on public servers might flag rapid slot switching. It's fine in singleplayer and on normal servers.
-- MIT licensed.
+- `./gradlew test` (either folder) runs unit tests for the patterns. They check ratios, cycle order, noise stability and checker layout.
+- `cd fabric && ./gradlew runClientGameTest` starts a real Minecraft client and:
+  - builds both walls in the screenshot above by right-clicking, and checks that the blocks were mixed;
+  - switches mixes and patterns with the in-game keys;
+  - clicks **+** in the editor and checks the weight changed;
+  - checks that settings files from 1.0.0 still load;
+  - saves screenshots to `fabric/build/run/clientGameTest/screenshots/`, which is where the images in this README come from.
+
+## License
+
+[MIT](LICENSE) © Tom Whitticase
