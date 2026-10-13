@@ -1,7 +1,7 @@
 package io.github.tomwhitticase.texturebrush;
 
+import io.github.tomwhitticase.texturebrush.BrushConfig.PaletteData;
 import io.github.tomwhitticase.texturebrush.Palettes.Entry;
-import io.github.tomwhitticase.texturebrush.Palettes.Palette;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,12 +36,21 @@ public final class BrushController {
     private static final Set<Integer> chosenSlots = new TreeSet<>();
 
     /** What the brush is currently working with, for placement and the HUD. */
-    record Status(@Nullable Palette palette, List<Entry> entries, Set<Integer> markedSlots) {}
+    record Status(@Nullable PaletteData palette, List<Entry> entries, Set<Integer> markedSlots) {}
 
     private BrushController() {}
 
     static boolean isEnabled() {
         return enabled;
+    }
+
+    static void setEnabled(boolean value) {
+        enabled = value;
+    }
+
+    /** Hotbar slots chosen with the toggle-slot key, or empty when every hotbar block is used. */
+    static Set<Integer> chosenSlots() {
+        return chosenSlots;
     }
 
     static void onClientTick(Minecraft mc) {
@@ -51,6 +60,7 @@ public final class BrushController {
         while (Keys.TOGGLE_SLOT.consumeClick()) toggleSlot(player);
         while (Keys.CYCLE_PATTERN.consumeClick()) cyclePattern(player);
         while (Keys.CYCLE_PALETTE.consumeClick()) cyclePalette(player);
+        while (Keys.OPEN_EDITOR.consumeClick()) mc.gui.setScreen(new BrushScreen(null));
     }
 
     public static void beforeUse(Minecraft mc) {
@@ -66,7 +76,7 @@ public final class BrushController {
         // Only take over when the player is actually holding one of the palette blocks.
         boolean holdingPaletteBlock = status.palette() == null
                 ? status.markedSlots().contains(player.getInventory().getSelectedSlot())
-                : status.palette().contains(held.getItem());
+                : Palettes.contains(status.palette(), held.getItem());
         if (!holdingPaletteBlock || status.entries().isEmpty()) return;
 
         BlockPos target = new BlockPlaceContext(player, InteractionHand.MAIN_HAND, held, hit).getClickedPos();
@@ -80,15 +90,15 @@ public final class BrushController {
 
     static Status status(LocalPlayer player) {
         Inventory inventory = player.getInventory();
-        Palette palette = Palettes.active();
+        PaletteData palette = Palettes.active();
         if (palette != null) {
             boolean infinite = player.hasInfiniteMaterials();
-            List<Entry> available = palette.entries().stream()
+            List<Entry> available = Palettes.entries(palette).stream()
                     .filter(e -> infinite || slotOf(inventory, e.item(), 0, Inventory.INVENTORY_SIZE) >= 0)
                     .toList();
             Set<Integer> slots = new TreeSet<>();
             for (int slot = 0; slot < Inventory.SELECTION_SIZE; slot++) {
-                if (palette.contains(inventory.getItem(slot).getItem())) slots.add(slot);
+                if (Palettes.contains(palette, inventory.getItem(slot).getItem())) slots.add(slot);
             }
             return new Status(palette, available, slots);
         }
@@ -168,9 +178,9 @@ public final class BrushController {
     private static void cyclePalette(LocalPlayer player) {
         List<String> names = new ArrayList<>();
         names.add("");
-        Palettes.all().forEach(p -> names.add(p.name()));
-        Palette current = Palettes.active();
-        int index = current == null ? 0 : names.indexOf(current.name());
+        BrushConfig.get().palettes.forEach(p -> names.add(p.name));
+        PaletteData current = Palettes.active();
+        int index = current == null ? 0 : names.indexOf(current.name);
         String next = names.get((index + 1) % names.size());
         BrushConfig.get().activePalette = next;
         BrushConfig.save();

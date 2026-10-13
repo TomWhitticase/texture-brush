@@ -24,7 +24,6 @@
     "fabric-api": "*"
   },
   "suggests": {
-    "cloth-config": "*",
     "modmenu": "*"
   }
 }

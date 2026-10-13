@@ -11,7 +11,7 @@ Download the jar for your loader from [Releases](../../releases) (or build it, s
 | Jar | Minecraft | Needs |
 |---|---|---|
 | `texturebrush-<version>.jar` | 1.21.1 (NeoForge 21.1.x) | nothing else |
-| `texturebrush-fabric-<version>.jar` | 26.3 (Fabric) | Fabric API. For the in-game config screen, also Mod Menu and Cloth Config. |
+| `texturebrush-fabric-<version>.jar` | 26.3 (Fabric) | Fabric API. Mod Menu is optional (adds a settings button). |
 
 ## Use
 
@@ -21,6 +21,7 @@ Download the jar for your loader from [Releases](../../releases) (or build it, s
 | Add/remove the held hotbar slot from the palette | `Alt+G` | `U` |
 | Next pattern | `Alt+P` | `Y` |
 | Next named palette (or back to hotbar mode) | `Alt+L` | `N` |
+| Open the brush editor | (config screen) | `B` |
 
 The Fabric keys are different because Minecraft 26.3 uses `G` for Quick Actions and its key bindings don't support Alt combos.
 
@@ -53,8 +54,18 @@ Cycle through them with the palette key (`Alt+L` / `N`). Hold any block from the
 | **Checker** | Alternates by position, ignoring weights |
 
 ## Configure
-- **NeoForge:** open **Mods → Texture Brush → Config**, or edit `config/texturebrush-client.toml`. Changes to the file apply live.
-- **Fabric:** open **Mods → Texture Brush → settings icon** (needs Mod Menu and Cloth Config), or edit `config/texturebrush.json` while the game is closed.
+
+### Fabric: brush editor
+Press **B** in game, or use **Mods → Texture Brush → settings icon**. Everything is point-and-click, so it works well with a trackpad:
+- **Top row:** turn the brush on or off, switch pattern, and show or hide the HUD. With Noise selected, there's also a patch-size slider and a **Shuffle patches** button.
+- **Mixes (left):** pick *Hotbar blocks* or a saved mix. Whatever you pick is what the brush uses. **+ New** saves the blocks in your hotbar as a new mix; **Delete** asks you to confirm.
+- **Blocks (middle):** each block shows its share with a bar. Use **−/+** to change its weight (shift-click for ±5) and **✕** to remove it. **+ Add block** opens a searchable grid of every block, with the ones in your inventory first. In hotbar mode, setting a weight to 0 leaves that block out.
+- **Preview (right):** an 8×8 wall built with the current mix and pattern. Use **New preview** to roll a different example.
+
+Settings are saved to `config/texturebrush.json`.
+
+### NeoForge
+Open **Mods → Texture Brush → Config**, or edit `config/texturebrush-client.toml`. Changes to the file apply live.
 
 ## Build
 There are two independent Gradle builds. The pattern logic and its tests in `common/` are shared by both.
@@ -63,7 +74,14 @@ There are two independent Gradle builds. The pattern logic and its tests in `com
 cd neoforge && ./gradlew build   # JDK 21, jar in neoforge/build/libs/
 cd fabric && ./gradlew build     # Gradle itself must run on JDK 25, jar in fabric/build/libs/
 ./gradlew runClient              # dev client with the mod loaded (in either folder)
+cd fabric && ./gradlew runClientGameTest   # opens the game, builds with the brush, screenshots the editor
 ```
+
+The Fabric game test opens a real client and runs these checks:
+- places a floor with the brush and checks that the blocks were mixed;
+- clicks **+** in the editor and checks the weight changed;
+- loads a 1.0.0-format config and checks it converts;
+- saves screenshots to `fabric/build/run/clientGameTest/screenshots/`.
 
 ## Notes
 - Very strict anti-cheat plugins on public servers might flag rapid slot switching. It's fine in singleplayer and on normal servers.

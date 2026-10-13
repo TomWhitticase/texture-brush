@@ -1,24 +1,8 @@
 {
+  "key.category.texturebrush.main": "Texture Brush",
   "key.texturebrush.toggle": "Toggle brush",
-  "key.texturebrush.toggle_slot": "Add/remove held slot from palette",
+  "key.texturebrush.toggle_slot": "Add/remove held slot from hotbar mix",
   "key.texturebrush.cycle_pattern": "Next pattern",
-  "key.texturebrush.cycle_palette": "Next palette",
-  "texturebrush.configuration.title": "Texture Brush",
-  "texturebrush.configuration.pattern": "Pattern",
-  "texturebrush.configuration.pattern.tooltip": "Random: weighted random every placement.\nNoise: weighted patches, so blocks form clumps.\nCycle: evenly interleaved order that follows the weights.\nChecker: alternates by position, ignoring weights.",
-  "texturebrush.configuration.noiseScale": "Noise Patch Size",
-  "texturebrush.configuration.noiseScale.tooltip": "Rough size, in blocks, of the patches made by the Noise pattern.",
-  "texturebrush.configuration.noiseSeed": "Noise Seed",
-  "texturebrush.configuration.noiseSeed.tooltip": "Change this to get a different arrangement of Noise patches.",
-  "texturebrush.configuration.defaultWeight": "Default Weight",
-  "texturebrush.configuration.defaultWeight.tooltip": "Weight for hotbar blocks that have no entry in Hotbar Weights.",
-  "texturebrush.configuration.weights": "Hotbar Weights",
-  "texturebrush.configuration.weights.tooltip": "Hotbar mode ratios, one per line as item=weight.\nExample: minecraft:bricks=3 and minecraft:granite=1 gives 75% bricks, 25% granite.\nA weight of 0 leaves that block out.",
-  "texturebrush.configuration.palettes": "Palettes",
-  "texturebrush.configuration.palettes.tooltip": "Named palettes, one per line as Name: item=weight, item=weight, ...\nCycle through them in game with N.",
-  "texturebrush.configuration.activePalette": "Active Palette",
-  "texturebrush.configuration.activePalette.tooltip": "Name of the palette in use. Leave empty to use the blocks in your hotbar.",
-  "texturebrush.configuration.showHud": "Show HUD",
-  "texturebrush.configuration.showHud.tooltip": "Show the brush status above the hotbar and mark palette slots while the brush is on.",
-  "key.category.texturebrush.main": "Texture Brush"
+  "key.texturebrush.cycle_palette": "Next saved mix",
+  "key.texturebrush.open_editor": "Open brush editor"
 }

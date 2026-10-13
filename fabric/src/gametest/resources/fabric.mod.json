@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "texturebrush-gametest",
+  "version": "1.0.0",
+  "name": "Texture Brush Game Tests",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-client-gametest": ["io.github.tomwhitticase.texturebrush.TextureBrushClientGameTest"]
+  },
+  "depends": {
+    "texturebrush": "*"
+  }
+}

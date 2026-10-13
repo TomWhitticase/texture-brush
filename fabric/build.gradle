@@ -7,9 +7,19 @@ base {
 }
 
 repositories {
-    maven { url 'https://maven.shedaniel.me/' }
     maven { url 'https://maven.terraformersmc.com/releases/' }
     mavenCentral()
+}
+
+fabricApi {
+    // In-game test that builds with the brush and screenshots the editor: ./gradlew runClientGameTest
+    configureTests {
+        createSourceSet = true
+        modId = 'texturebrush-gametest'
+        enableGameTests = false
+        enableClientGameTests = true
+        eula = true
+    }
 }
 
 // Pattern logic shared with the NeoForge build.
@@ -21,9 +31,6 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-    implementation("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
-        exclude(group: 'net.fabricmc.fabric-api')
-    }
     implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     testImplementation platform('org.junit:junit-bom:5.11.4')
