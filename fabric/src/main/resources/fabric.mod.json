@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "texturebrush",
+  "version": "${version}",
+  "name": "Texture Brush",
+  "description": "Automatically mixes blocks as you build. Put the blocks you want in your hotbar (or define a palette), toggle the brush, and every placement picks a block for you using weighted random, patchy noise, cycle or checker patterns.",
+  "authors": ["Tom Whitticase"],
+  "contact": {
+    "homepage": "https://github.com/TomWhitticase/texture-brush",
+    "sources": "https://github.com/TomWhitticase/texture-brush",
+    "issues": "https://github.com/TomWhitticase/texture-brush/issues"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["io.github.tomwhitticase.texturebrush.TextureBrush"],
+    "modmenu": ["io.github.tomwhitticase.texturebrush.ModMenuIntegration"]
+  },
+  "mixins": ["texturebrush.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "cloth-config": "*",
+    "modmenu": "*"
+  }
+}

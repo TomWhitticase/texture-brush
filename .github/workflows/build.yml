@@ -16,26 +16,39 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup JDK 21
+      - name: Setup JDKs
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: |
+            21
+            25
           distribution: 'temurin'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build with Gradle
+      - name: Build NeoForge
+        working-directory: neoforge
         run: ./gradlew build
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
 
-      - name: Upload jar
+      - name: Build Fabric
+        working-directory: fabric
+        run: ./gradlew build
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_25_X64 }}
+
+      - name: Upload jars
         uses: actions/upload-artifact@v4
         with:
           name: texturebrush
-          path: build/libs/*.jar
+          path: |
+            neoforge/build/libs/*.jar
+            fabric/build/libs/*.jar
 
       - name: Attach jar to release
         if: github.event_name == 'release'
-        run: gh release upload "${{ github.event.release.tag_name }}" build/libs/*.jar --clobber
+        run: gh release upload "${{ github.event.release.tag_name }}" neoforge/build/libs/*.jar fabric/build/libs/*.jar --clobber
         env:
           GH_TOKEN: ${{ github.token }}
